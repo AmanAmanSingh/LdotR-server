@@ -1,8 +1,12 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv').config();
-const server = require("./server")
+const server = require("./server");
+
+
 const userRoute = require("./app/routes/userRoutes")
+const blogRoute = require("./app/routes/blogRoutes")
+
 
 const EXPRESS_PORT  = process.env.EXPRESS_PORT || 8000;
 const BASIC_SERVER_PORT  = process.env.BASIC_SERVER_PORT || 4200;
@@ -27,6 +31,7 @@ connectDB();
 
 
 app.use('/api/v1.0/', userRoute);
+app.use('/api/v1.0/', blogRoute);
 
 //Express Server
 app.listen(EXPRESS_PORT , ()=>{

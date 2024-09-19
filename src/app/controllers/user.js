@@ -18,7 +18,10 @@ const createUser = async (req, res) => {
             age,
         });
 
-        return res.status(201).json(newUser);
+        return res.status(201).json({
+            status : "success",
+            newUser
+        });
 
     } catch (error) {
         res.status(500).json({
@@ -32,7 +35,10 @@ const createUser = async (req, res) => {
 const getUsers = async (req, res) => {
     try {
         const users = await User.find();
-        res.json(users);
+        res.status(200).json({
+            status: "success",
+            users
+        });
     } catch (error) {
         res.status(500).json({
             message: error.messsage
