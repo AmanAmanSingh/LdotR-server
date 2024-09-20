@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - internal_network
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+    networks:
+      - internal_network
+      - external_network
+
+  ldotr-server:
+    image: amans7097/ldotr-server
+    depends_on:
+      - mongo
+    restart: always
+    environment:
+      EXPRESS_PORT: 8080
+      BASIC_SERVER_PORT: 3000
+      MONGO_URI: mongodb://root:example@mongo:27017/lDotR?authSource=admin
+    networks:
+      - internal_network
+      - external_network
+    ports:
+      - 3000:8080
+      - 4200:3000
+
+networks:
+  internal_network:
+    driver: bridge
+  external_network:
+    driver: bridge
